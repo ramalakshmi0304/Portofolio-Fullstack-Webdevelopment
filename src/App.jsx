@@ -1,15 +1,15 @@
 import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { SiHtml5, SiCss3, SiReact, SiNodedotjs, SiExpress, SiSupabase, SiTailwindcss, SiGithub, SiMongodb, SiShadcnui } from "react-icons/si";
-import { VscVm } from "react-icons/vsc";
-import { User, Linkedin, Mail, ArrowUp, Download, Moon, Sun, ArrowRight } from "lucide-react";
-import emailjs from "@emailjs/browser";
+import { User, Download, Moon, Sun, ArrowRight, Menu, X } from "lucide-react";
 
+// Animation Variants
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
   visible: { opacity: 1, y: 0 },
 };
 
+// Project Card Component
 const ProjectCard = ({ title, description, tech, liveDemo, github, image }) => (
   <motion.div
     initial={{ opacity: 0, y: 30 }}
@@ -46,14 +46,22 @@ const ProjectCard = ({ title, description, tech, liveDemo, github, image }) => (
 export default function App() {
   const [theme, setTheme] = useState(localStorage.getItem("theme") || "light");
   const [downloadCount, setDownloadCount] = useState(0);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
+  // Theme Management
   useEffect(() => {
     const root = document.documentElement;
     theme === "dark" ? root.classList.add("dark") : root.classList.remove("dark");
     localStorage.setItem("theme", theme);
   }, [theme]);
 
-  // IMAGE PLACEHOLDER LOGIC: Replace 'null' with your image path later
+  // Close menu on resize to desktop
+  useEffect(() => {
+    const handleResize = () => { if (window.innerWidth >= 768) setIsMenuOpen(false); };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   const profileImg = null; 
 
   return (
@@ -63,6 +71,8 @@ export default function App() {
       <nav className="fixed top-0 w-full bg-white/90 dark:bg-slate-900/90 backdrop-blur-2xl border-b border-slate-200 dark:border-slate-800 z-50">
         <div className="max-w-7xl mx-auto px-6 py-6 flex justify-between items-center">
           <h1 className="text-3xl font-black tracking-tighter text-slate-900 dark:text-white">Rama Lakshmi</h1>
+          
+          {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-10">
             <a href="#home" className="text-lg font-bold hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Home</a>
             <a href="#skills" className="text-lg font-bold hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Skills</a>
@@ -72,84 +82,64 @@ export default function App() {
             </button>
             <a href="#contact" className="bg-indigo-600 text-white px-8 py-3 rounded-2xl font-bold text-lg hover:bg-indigo-700 shadow-lg shadow-indigo-500/20">Contact</a>
           </div>
+
+          {/* Mobile Actions */}
+          <div className="flex md:hidden items-center gap-4">
+            <button onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')} className="p-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-yellow-400">
+              {theme === "dark" ? <Sun size={20} /> : <Moon size={20} />}
+            </button>
+            <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="p-2 text-slate-900 dark:text-white">
+              {isMenuOpen ? <X size={32} /> : <Menu size={32} />}
+            </button>
+          </div>
         </div>
+
+        {/* Mobile Menu Dropdown */}
+        <AnimatePresence>
+          {isMenuOpen && (
+            <motion.div 
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              exit={{ opacity: 0, height: 0 }}
+              className="md:hidden bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 overflow-hidden"
+            >
+              <div className="flex flex-col p-8 gap-6 font-bold text-2xl">
+                <a href="#home" onClick={() => setIsMenuOpen(false)}>Home</a>
+                <a href="#skills" onClick={() => setIsMenuOpen(false)}>Skills</a>
+                <a href="#projects" onClick={() => setIsMenuOpen(false)}>Projects</a>
+                <a href="#contact" onClick={() => setIsMenuOpen(false)} className="bg-indigo-600 text-white text-center py-4 rounded-2xl">Contact Me</a>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </nav>
 
-     {/* HERO SECTION */}
-<section id="home" className="min-h-screen pt-32 px-6 relative overflow-hidden flex items-center bg-slate-50 dark:bg-slate-950 transition-colors duration-500">
-  <div className="max-w-7xl mx-auto w-full grid lg:grid-cols-2 gap-16 items-center relative z-10">
-    
-    {/* LEFT SIDE: PROFILE IMAGE */}
-    <motion.div 
-      initial={{ opacity: 0, x: -50 }} 
-      animate={{ opacity: 1, x: 0 }} 
-      transition={{ duration: 0.8 }}
-      className="flex justify-center lg:justify-start order-2 lg:order-1"
-    >
-      <div className="relative group">
-        {/* Main Image Container */}
-        <div className="w-72 h-72 sm:w-80 sm:h-80 md:w-[450px] md:h-[450px] rounded-[40px] overflow-hidden border-8 border-white dark:border-slate-800 shadow-2xl bg-slate-200 dark:bg-slate-800 flex items-center justify-center transition-colors">
-          {profileImg ? (
-            <img src={profileImg} alt="Rama Lakshmi" className="w-full h-full object-cover" />
-          ) : (
-            <div className="flex flex-col items-center text-slate-400 dark:text-slate-600">
-              <User size={120} strokeWidth={1} />
-              <span className="text-sm font-bold mt-4 uppercase tracking-widest">Profile Photo</span>
+      {/* HERO SECTION */}
+      <section id="home" className="min-h-screen pt-32 px-6 relative overflow-hidden flex items-center">
+        <div className="max-w-7xl mx-auto w-full grid lg:grid-cols-2 gap-16 items-center relative z-10">
+          <motion.div initial={{ opacity: 0, x: -50 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.8 }} className="flex justify-center lg:justify-start order-2 lg:order-1">
+            <div className="relative group">
+              <div className="w-72 h-72 sm:w-80 sm:h-80 md:w-[450px] md:h-[450px] rounded-[40px] overflow-hidden border-8 border-white dark:border-slate-800 shadow-2xl bg-slate-200 dark:bg-slate-800 flex items-center justify-center transition-colors">
+                {profileImg ? <img src={profileImg} alt="Rama Lakshmi" className="w-full h-full object-cover" /> : <div className="flex flex-col items-center text-slate-400 dark:text-slate-600"><User size={120} strokeWidth={1} /><span className="text-sm font-bold mt-4 uppercase tracking-widest">Profile Photo</span></div>}
+              </div>
+              <div className="absolute -z-10 -bottom-6 -right-6 w-full h-full bg-indigo-500/20 dark:bg-indigo-500/10 rounded-[40px] blur-2xl"></div>
             </div>
-          )}
+          </motion.div>
+
+          <motion.div initial={{ opacity: 0, x: 50 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.8 }} className="text-center lg:text-left order-1 lg:order-2">
+            <div className="inline-flex items-center gap-3 mb-8 bg-indigo-100 dark:bg-indigo-900/40 px-6 py-3 rounded-2xl border border-indigo-200 dark:border-indigo-800">
+              <motion.div animate={{ scale: [1, 1.2, 1] }} transition={{ repeat: Infinity, duration: 2 }} className="w-2 h-2 bg-indigo-600 rounded-full" />
+              <span className="text-indigo-700 dark:text-indigo-400 font-black uppercase tracking-[0.2em] text-sm">Full Stack Developer</span>
+            </div>
+            <h1 className="text-6xl md:text-8xl font-black leading-[0.9] mb-8 dark:text-white">Hi, I'm <br/><span className="bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">Rama Lakshmi</span></h1>
+            <p className="text-2xl md:text-3xl text-slate-600 dark:text-slate-400 mb-12 leading-relaxed max-w-2xl font-medium">I build high-performance web applications using React, Node.js, and Supabase.</p>
+            <div className="flex flex-col sm:flex-row gap-6 justify-center lg:justify-start">
+              <a href="#contact" className="px-10 py-6 bg-indigo-600 text-white rounded-3xl font-black text-xl hover:bg-indigo-700 hover:scale-105 transition-all text-center shadow-xl shadow-indigo-500/25">Get In Touch</a>
+              <button onClick={() => setDownloadCount(c => c + 1)} className="px-10 py-6 bg-white dark:bg-slate-800 border-4 border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white rounded-3xl font-black text-xl flex items-center justify-center gap-3 hover:bg-slate-50 dark:hover:bg-slate-700 transition-all shadow-lg"><Download size={24}/> Resume ({downloadCount})</button>
+            </div>
+          </motion.div>
         </div>
-        
-        {/* Decorative elements */}
-        <div className="absolute -z-10 -bottom-6 -right-6 w-full h-full bg-indigo-500/20 dark:bg-indigo-500/10 rounded-[40px] blur-2xl"></div>
-        <div className="absolute -z-10 -top-6 -left-6 w-32 h-32 bg-purple-500/20 dark:bg-purple-500/10 rounded-full blur-xl"></div>
-      </div>
-    </motion.div>
-
-    {/* RIGHT SIDE: ABOUT ME TEXT */}
-    <motion.div 
-      initial={{ opacity: 0, x: 50 }} 
-      animate={{ opacity: 1, x: 0 }} 
-      transition={{ duration: 0.8 }}
-      className="text-center lg:text-left order-1 lg:order-2"
-    >
-      <div className="inline-flex items-center gap-3 mb-8 bg-indigo-100 dark:bg-indigo-900/40 px-6 py-3 rounded-2xl border border-indigo-200 dark:border-indigo-800">
-        <motion.div 
-          animate={{ scale: [1, 1.2, 1] }}
-          transition={{ repeat: Infinity, duration: 2 }}
-          className="w-2 h-2 bg-indigo-600 rounded-full" 
-        />
-        <span className="text-indigo-700 dark:text-indigo-400 font-black uppercase tracking-[0.2em] text-sm">Full Stack Developer</span>
-      </div>
-      
-      <h1 className="text-6xl md:text-8xl font-black leading-[0.9] mb-8 dark:text-white transition-colors">
-        Hi, I'm <br/>
-        <span className="bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
-          Rama Lakshmi
-        </span>
-      </h1>
-      
-      <p className="text-2xl md:text-3xl text-slate-600 dark:text-slate-400 mb-12 leading-relaxed max-w-2xl font-medium transition-colors">
-        I build high-performance web applications using React, Node.js, and Supabase, focusing on seamless user experiences and scalable architecture.
-      </p>
-
-      <div className="flex flex-col sm:flex-row gap-6 justify-center lg:justify-start">
-        <a 
-          href="#contact" 
-          className="px-10 py-6 bg-indigo-600 text-white rounded-3xl font-black text-xl hover:bg-indigo-700 hover:scale-105 transition-all text-center shadow-xl shadow-indigo-500/25"
-        >
-          Get In Touch
-        </a>
-        <button 
-          onClick={() => setDownloadCount(c => c + 1)} 
-          className="px-10 py-6 bg-white dark:bg-slate-800 border-4 border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white rounded-3xl font-black text-xl flex items-center justify-center gap-3 hover:bg-slate-50 dark:hover:bg-slate-700 transition-all shadow-lg"
-        >
-          <Download size={24}/> Resume ({downloadCount})
-        </button>
-      </div>
-    </motion.div>
-
-  </div>
-</section>
+      </section>
 
       {/* SKILLS SECTION */}
       <section id="skills" className="py-40 bg-white dark:bg-slate-900 transition-colors">
@@ -170,15 +160,10 @@ export default function App() {
               { name: "GitHub", icon: <SiGithub className="dark:text-white" /> },
               { name: "HTML5", icon: <SiHtml5 className="text-orange-500" /> }
             ].map((skill, i) => (
-              <motion.div 
-          key={i} 
-          whileHover={{ y: -10, scale: 1.02 }} 
-          className="bg-slate-50 dark:bg-slate-800 p-10 rounded-[32px] border border-slate-200 dark:border-slate-700 flex flex-col items-center gap-6 transition-all shadow-lg hover:shadow-indigo-500/10"
-        >
-          <span className="text-6xl md:text-7xl">{skill.icon}</span>
-          <span className="text-xl md:text-2xl font-black dark:text-slate-200">{skill.name}</span>
-        </motion.div>
-   
+              <motion.div key={i} whileHover={{ y: -10, scale: 1.02 }} className="bg-slate-50 dark:bg-slate-800 p-10 rounded-[32px] border border-slate-200 dark:border-slate-700 flex flex-col items-center gap-6 transition-all shadow-lg hover:shadow-indigo-500/10">
+                <span className="text-6xl md:text-7xl">{skill.icon}</span>
+                <span className="text-xl md:text-2xl font-black dark:text-slate-200">{skill.name}</span>
+              </motion.div>
             ))}
           </div>
         </div>
