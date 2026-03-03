@@ -11,7 +11,7 @@ import emailjs from "@emailjs/browser";
 
 // --- Sub-Components ---
 
-const ProjectCard = ({ title, description, tech, liveDemo, github, image }) => (
+const ProjectCard = ({ title, description, tech, liveDemo, githubFrontend, githubBackend, image }) => (
   <motion.div
     initial={{ opacity: 0, y: 30 }}
     whileInView={{ opacity: 1, y: 0 }}
@@ -27,18 +27,28 @@ const ProjectCard = ({ title, description, tech, liveDemo, github, image }) => (
     <div>
       <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-4 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">{title}</h3>
       <p className="text-slate-700 dark:text-slate-300 mb-6 leading-relaxed text-lg">{description}</p>
+      
       <div className="flex flex-wrap gap-2 mb-8">
         {tech.map((t) => (
           <span key={t} className="px-3 py-2 bg-slate-100 dark:bg-slate-700 text-slate-800 dark:text-slate-200 rounded-xl text-sm font-semibold border border-slate-200 dark:border-slate-600">{t}</span>
         ))}
       </div>
-      <div className="flex flex-col sm:flex-row gap-3">
-        <a href={liveDemo} target="_blank" rel="noreferrer" className="flex-1 bg-indigo-600 text-white py-4 px-6 rounded-2xl font-bold text-lg hover:bg-indigo-700 transition-all flex items-center justify-center gap-3">
+
+      <div className="flex flex-col gap-3">
+        {/* Live Demo - Primary Action */}
+        <a href={liveDemo} target="_blank" rel="noreferrer" className="w-full bg-indigo-600 text-white py-4 px-6 rounded-2xl font-bold text-lg hover:bg-indigo-700 transition-all flex items-center justify-center gap-3">
           <span>🔗 Live Demo</span> <ArrowRight className="w-5 h-5"/>
         </a>
-        <a href={github} target="_blank" rel="noreferrer" className="flex-1 border-2 border-slate-300 dark:border-slate-600 dark:text-white py-4 px-6 rounded-2xl font-bold text-lg hover:bg-slate-50 dark:hover:bg-slate-700 transition-all flex items-center justify-center gap-3">
-          <span>💻 GitHub</span> <SiGithub className="w-5 h-5" />
-        </a>
+
+        {/* GitHub Links - Secondary Actions */}
+        <div className="flex flex-col sm:flex-row gap-3">
+          <a href={githubFrontend} target="_blank" rel="noreferrer" className="flex-1 border-2 border-slate-300 dark:border-slate-600 dark:text-white py-4 px-6 rounded-2xl font-bold text-base hover:bg-slate-50 dark:hover:bg-slate-700 transition-all flex items-center justify-center gap-2">
+            <SiGithub className="w-5 h-5" /> <span>Frontend</span>
+          </a>
+          <a href={githubBackend} target="_blank" rel="noreferrer" className="flex-1 border-2 border-slate-300 dark:border-slate-600 dark:text-white py-4 px-6 rounded-2xl font-bold text-base hover:bg-slate-50 dark:hover:bg-slate-700 transition-all flex items-center justify-center gap-2">
+            <SiNodedotjs className="w-5 h-5 text-green-500" /> <span>Backend</span>
+          </a>
+        </div>
       </div>
     </div>
   </motion.div>
@@ -53,7 +63,6 @@ export default function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isSending, setIsSending] = useState(false);
 
-  // 1. Initialize EmailJS with your Public Key immediately
   useEffect(() => {
     const publicKey = import.meta.env.VITE_EMAIL_PUBLIC_KEY;
     if (publicKey) {
@@ -61,14 +70,12 @@ export default function App() {
     }
   }, []);
 
-  // 2. Theme Toggle Logic
   useEffect(() => {
     const root = document.documentElement;
     theme === "dark" ? root.classList.add("dark") : root.classList.remove("dark");
     localStorage.setItem("theme", theme);
   }, [theme]);
 
-  // 3. Handle Form Submission
   const sendEmail = (e) => {
     e.preventDefault();
     setIsSending(true);
@@ -79,13 +86,11 @@ export default function App() {
 
     emailjs.sendForm(serviceID, templateID, form.current, publicKey)
       .then((result) => {
-        console.log("SUCCESS!", result.status, result.text);
         alert("Message sent successfully! 🚀");
         setIsSending(false);
         e.target.reset();
       })
       .catch((error) => {
-        console.error("FAILED...", error);
         alert(`Failed to send: ${error.text || "Check console for details"}`);
         setIsSending(false);
       });
@@ -196,8 +201,24 @@ export default function App() {
         <div className="max-w-7xl mx-auto px-6">
           <h2 className="text-5xl md:text-7xl font-black text-center mb-24 dark:text-white">Featured Projects</h2>
           <div className="grid md:grid-cols-2 gap-12 lg:gap-20">
-            <ProjectCard title="🍳 Recipe Management" description="Full-stack discovery app with AI-powered search and auth." tech={["React", "Node.js", "Supabase"]} image="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=800" />
-            <ProjectCard title="📦 Order Management" description="Enterprise platform with real-time analytics." tech={["React", "Express", "PostgreSQL"]} image="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800" />
+            {/* Memory Lane Project Update */}
+            <ProjectCard 
+              title="📸 Memory Lane Project" 
+              description="A full-stack media preservation platform allowing users to log personal milestones and link rich media to specific memories." 
+              tech={["React", "Node.js", "Supabase", "PostgreSQL"]} 
+              image="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=800" 
+              liveDemo= "https://memory-lane-frontend-three.vercel.app/"
+              githubFrontend="https://github.com/ramalakshmi0304/MemoryLane-Frontend"
+              githubBackend="https://github.com/ramalakshmi0304/MemoryLane-Backend"
+                           
+            />
+            {/* Time Tracking Analytics Update */}
+            <ProjectCard 
+              title="📊 Time Tracking Analytics" 
+              description="An enterprise-grade dashboard featuring real-time data visualization of daily activities and efficiency metrics." 
+              tech={["React", "Chart.js", "Firebase", "Tailwind"]} 
+              image="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800" 
+            />
           </div>
         </div>
       </section>
