@@ -207,7 +207,7 @@ export default function App() {
               description="A full-stack media preservation platform allowing users to log personal milestones and link rich media to specific memories." 
               tech={["React", "Node.js", "Supabase", "PostgreSQL"]} 
               image="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=800" 
-              liveDemo= "https://memory-lane-frontend-three.vercel.app/"
+              liveDemo= "https://memory-lane-frontend-three.vercel.app"
               githubFrontend="https://github.com/ramalakshmi0304/MemoryLane-Frontend"
               githubBackend="https://github.com/ramalakshmi0304/MemoryLane-Backend"
                            
@@ -216,8 +216,10 @@ export default function App() {
             <ProjectCard 
               title="📊 Time Tracking Analytics" 
               description="An enterprise-grade dashboard featuring real-time data visualization of daily activities and efficiency metrics." 
-              tech={["React", "Chart.js", "Firebase", "Tailwind"]} 
-              image="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800" 
+              tech={["React", "Supabase", "CSS"]} 
+              image="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800"
+              liveDemo= "https://time-tracking-app-mu-lac.vercel.app/"
+              githubFrontend="https://github.com/ramalakshmi0304/time-tracking-app"
             />
           </div>
         </div>
