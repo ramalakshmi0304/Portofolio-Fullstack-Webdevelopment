@@ -35,19 +35,23 @@ const ProjectCard = ({ title, description, tech, liveDemo, githubFrontend, githu
       </div>
 
       <div className="flex flex-col gap-3">
-        {/* Live Demo - Primary Action */}
+        {/* Live Demo */}
         <a href={liveDemo} target="_blank" rel="noreferrer" className="w-full bg-indigo-600 text-white py-4 px-6 rounded-2xl font-bold text-lg hover:bg-indigo-700 transition-all flex items-center justify-center gap-3">
           <span>🔗 Live Demo</span> <ArrowRight className="w-5 h-5"/>
         </a>
 
-        {/* GitHub Links - Secondary Actions */}
+        {/* Dynamic GitHub Links */}
         <div className="flex flex-col sm:flex-row gap-3">
-          <a href={githubFrontend} target="_blank" rel="noreferrer" className="flex-1 border-2 border-slate-300 dark:border-slate-600 dark:text-white py-4 px-6 rounded-2xl font-bold text-base hover:bg-slate-50 dark:hover:bg-slate-700 transition-all flex items-center justify-center gap-2">
-            <SiGithub className="w-5 h-5" /> <span>Frontend</span>
-          </a>
-          <a href={githubBackend} target="_blank" rel="noreferrer" className="flex-1 border-2 border-slate-300 dark:border-slate-600 dark:text-white py-4 px-6 rounded-2xl font-bold text-base hover:bg-slate-50 dark:hover:bg-slate-700 transition-all flex items-center justify-center gap-2">
-            <SiNodedotjs className="w-5 h-5 text-green-500" /> <span>Backend</span>
-          </a>
+          {githubFrontend && (
+            <a href={githubFrontend} target="_blank" rel="noreferrer" className="flex-1 border-2 border-slate-300 dark:border-slate-600 dark:text-white py-4 px-6 rounded-2xl font-bold text-base hover:bg-slate-50 dark:hover:bg-slate-700 transition-all flex items-center justify-center gap-2">
+              <SiGithub className="w-5 h-5" /> <span>{githubBackend ? "Frontend" : "View Source"}</span>
+            </a>
+          )}
+          {githubBackend && (
+            <a href={githubBackend} target="_blank" rel="noreferrer" className="flex-1 border-2 border-slate-300 dark:border-slate-600 dark:text-white py-4 px-6 rounded-2xl font-bold text-base hover:bg-slate-50 dark:hover:bg-slate-700 transition-all flex items-center justify-center gap-2">
+              <SiNodedotjs className="w-5 h-5 text-green-500" /> <span>Backend</span>
+            </a>
+          )}
         </div>
       </div>
     </div>
@@ -79,21 +83,13 @@ export default function App() {
   const sendEmail = (e) => {
     e.preventDefault();
     setIsSending(true);
-
     const serviceID = import.meta.env.VITE_EMAIL_SERVICE_ID;
     const templateID = import.meta.env.VITE_EMAIL_TEMPLATE_ID;
     const publicKey = import.meta.env.VITE_EMAIL_PUBLIC_KEY;
 
     emailjs.sendForm(serviceID, templateID, form.current, publicKey)
-      .then((result) => {
-        alert("Message sent successfully! 🚀");
-        setIsSending(false);
-        e.target.reset();
-      })
-      .catch((error) => {
-        alert(`Failed to send: ${error.text || "Check console for details"}`);
-        setIsSending(false);
-      });
+      .then(() => { alert("Message sent successfully! 🚀"); setIsSending(false); e.target.reset(); })
+      .catch((error) => { alert(`Failed to send: ${error.text}`); setIsSending(false); });
   };
 
   const profileImg = null; 
@@ -197,28 +193,25 @@ export default function App() {
       </section>
 
       {/* PROJECTS SECTION */}
-      <section id="projects" className="py-40 bg-slate-50 dark:bg-slate-950">
+    <section id="projects" className="py-40 bg-slate-50 dark:bg-slate-950">
         <div className="max-w-7xl mx-auto px-6">
           <h2 className="text-5xl md:text-7xl font-black text-center mb-24 dark:text-white">Featured Projects</h2>
           <div className="grid md:grid-cols-2 gap-12 lg:gap-20">
-            {/* Memory Lane Project Update */}
             <ProjectCard 
               title="📸 Memory Lane Project" 
               description="A full-stack media preservation platform allowing users to log personal milestones and link rich media to specific memories." 
               tech={["React", "Node.js", "Supabase", "PostgreSQL"]} 
               image="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=800" 
-              liveDemo= "https://memory-lane-frontend-three.vercel.app"
+              liveDemo="https://memory-lane-frontend-three.vercel.app"
               githubFrontend="https://github.com/ramalakshmi0304/MemoryLane-Frontend"
               githubBackend="https://github.com/ramalakshmi0304/MemoryLane-Backend"
-                           
             />
-            {/* Time Tracking Analytics Update */}
             <ProjectCard 
               title="📊 Time Tracking Analytics" 
               description="An enterprise-grade dashboard featuring real-time data visualization of daily activities and efficiency metrics." 
               tech={["React", "Supabase", "CSS"]} 
               image="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800"
-              liveDemo= "https://time-tracking-app-mu-lac.vercel.app/"
+              liveDemo="https://time-tracking-app-mu-lac.vercel.app/"
               githubFrontend="https://github.com/ramalakshmi0304/time-tracking-app"
             />
           </div>
