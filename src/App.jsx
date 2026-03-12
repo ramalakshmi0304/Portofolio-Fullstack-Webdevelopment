@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
   SiHtml5, SiCss3, SiReact, SiNodedotjs, SiExpress, 
-  SiSupabase, SiTailwindcss, SiGithub, SiMongodb, SiShadcnui 
+  SiSupabase, SiTailwindcss, SiGithub, SiShadcnui 
 } from "react-icons/si";
 import { 
   User, Download, Moon, Sun, ArrowRight, Menu, X, Mail, MapPin 
@@ -180,7 +180,6 @@ export default function App() {
               { name: "Tailwind", icon: <SiTailwindcss className="text-sky-400" /> },
               { name: "shadcn/ui", icon: <SiShadcnui className="text-slate-900 dark:text-white" /> }, 
               { name: "Express", icon: <SiExpress className="dark:text-white" /> },
-              { name: "MongoDB", icon: <SiMongodb className="text-green-600" /> },
               { name: "GitHub", icon: <SiGithub className="dark:text-white" /> }
             ].map((skill, i) => (
               <motion.div key={i} whileHover={{ y: -10 }} className="bg-slate-50 dark:bg-slate-800 p-10 rounded-[32px] border border-slate-200 dark:border-slate-700 flex flex-col items-center gap-6 shadow-lg">
