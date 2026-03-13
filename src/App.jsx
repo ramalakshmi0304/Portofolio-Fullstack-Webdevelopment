@@ -1,11 +1,11 @@
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { 
-  SiHtml5, SiCss3, SiReact, SiNodedotjs, SiExpress, 
-  SiSupabase, SiTailwindcss, SiGithub, SiShadcnui 
+import {
+  SiHtml5, SiCss3, SiReact, SiNodedotjs, SiExpress,
+  SiSupabase, SiTailwindcss, SiGithub, SiShadcnui
 } from "react-icons/si";
-import { 
-  User, Download, Moon, Sun, ArrowRight, Menu, X, Mail, MapPin 
+import {
+  User, Download, Moon, Sun, ArrowRight, Menu, X, Mail, MapPin
 } from "lucide-react";
 import emailjs from "@emailjs/browser";
 
@@ -27,7 +27,7 @@ const ProjectCard = ({ title, description, tech, liveDemo, githubFrontend, githu
     <div>
       <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-4 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">{title}</h3>
       <p className="text-slate-700 dark:text-slate-300 mb-6 leading-relaxed text-lg">{description}</p>
-      
+
       <div className="flex flex-wrap gap-2 mb-8">
         {tech.map((t) => (
           <span key={t} className="px-3 py-2 bg-slate-100 dark:bg-slate-700 text-slate-800 dark:text-slate-200 rounded-xl text-sm font-semibold border border-slate-200 dark:border-slate-600">{t}</span>
@@ -37,7 +37,7 @@ const ProjectCard = ({ title, description, tech, liveDemo, githubFrontend, githu
       <div className="flex flex-col gap-3">
         {/* Live Demo */}
         <a href={liveDemo} target="_blank" rel="noreferrer" className="w-full bg-indigo-600 text-white py-4 px-6 rounded-2xl font-bold text-lg hover:bg-indigo-700 transition-all flex items-center justify-center gap-3">
-          <span>🔗 Live Demo</span> <ArrowRight className="w-5 h-5"/>
+          <span>🔗 Live Demo</span> <ArrowRight className="w-5 h-5" />
         </a>
 
         {/* Dynamic GitHub Links */}
@@ -92,16 +92,16 @@ export default function App() {
       .catch((error) => { alert(`Failed to send: ${error.text}`); setIsSending(false); });
   };
 
-  const profileImg = null; 
+  const profileImg = "https://pplx-res.cloudinary.com/image/upload/pplx_search_images/e56fc44179500ae6ec5e8288d84ab7bc853555a6.jpg";
 
   return (
     <div className="bg-slate-50 dark:bg-slate-950 min-h-screen text-slate-900 dark:text-slate-100 antialiased transition-colors duration-500 font-sans">
-      
+
       {/* NAVBAR */}
       <nav className="fixed top-0 w-full bg-white/90 dark:bg-slate-900/90 backdrop-blur-2xl border-b border-slate-200 dark:border-slate-800 z-50">
         <div className="max-w-7xl mx-auto px-6 py-6 flex justify-between items-center">
           <h1 className="text-3xl font-black tracking-tighter text-slate-900 dark:text-white">Rama Lakshmi</h1>
-          
+
           <div className="hidden md:flex items-center gap-10">
             <a href="#home" className="text-lg font-bold hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Home</a>
             <a href="#skills" className="text-lg font-bold hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Skills</a>
@@ -124,7 +124,7 @@ export default function App() {
 
         <AnimatePresence>
           {isMenuOpen && (
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} exit={{ opacity: 0, height: 0 }}
               className="md:hidden bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 overflow-hidden"
             >
@@ -156,13 +156,15 @@ export default function App() {
               <motion.div animate={{ scale: [1, 1.2, 1] }} transition={{ repeat: Infinity, duration: 2 }} className="w-2 h-2 bg-indigo-600 rounded-full" />
               <span className="text-indigo-700 dark:text-indigo-400 font-black uppercase tracking-[0.2em] text-sm">Full Stack Developer</span>
             </div>
-            <h1 className="text-6xl md:text-8xl font-black leading-[0.9] mb-8 dark:text-white">Hi, I'm <br/><span className="bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">Rama Lakshmi</span></h1>
+            <h1 className="text-6xl md:text-8xl font-black mb-8 dark:text-white">Hi, I'm <span className="bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">Rama Lakshmi</span></h1>
             <p className="text-2xl md:text-3xl text-slate-600 dark:text-slate-400 mb-12 max-w-2xl font-medium">I build high-performance web applications using React, Node.js, and Supabase.</p>
             <div className="flex flex-col sm:flex-row gap-6 justify-center lg:justify-start">
               <a href="#contact" className="px-10 py-6 bg-indigo-600 text-white rounded-3xl font-black text-xl hover:bg-indigo-700 shadow-xl shadow-indigo-500/25 transition-all">Get In Touch</a>
-              <button onClick={() => setDownloadCount(c => c + 1)} className="px-10 py-6 bg-white dark:bg-slate-800 border-4 border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white rounded-3xl font-black text-xl flex items-center justify-center gap-3 shadow-lg">
-                <Download size={24}/> Resume ({downloadCount})
-              </button>
+              <a href="https://drive.google.com/file/d/1mrQlsl0iaJF4czrWc5nOC6IKQ-L5CSGx/view?usp=drive_link" download="Rama-Lakshmi-Resume.pdf"
+                onClick={() => setDownloadCount(c => c + 1)}
+                className="px-10 py-6 bg-white dark:bg-slate-800 border-4 border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white rounded-3xl font-black text-xl flex items-center justify-center gap-3 shadow-lg hover:shadow-xl transition-all">
+                <Download size={24} /> Resume ({downloadCount})
+              </a>
             </div>
           </motion.div>
         </div>
@@ -178,7 +180,7 @@ export default function App() {
               { name: "Node.js", icon: <SiNodedotjs className="text-green-500" /> },
               { name: "Supabase", icon: <SiSupabase className="text-emerald-500" /> },
               { name: "Tailwind", icon: <SiTailwindcss className="text-sky-400" /> },
-              { name: "shadcn/ui", icon: <SiShadcnui className="text-slate-900 dark:text-white" /> }, 
+              { name: "shadcn/ui", icon: <SiShadcnui className="text-slate-900 dark:text-white" /> },
               { name: "Express", icon: <SiExpress className="dark:text-white" /> },
               { name: "GitHub", icon: <SiGithub className="dark:text-white" /> }
             ].map((skill, i) => (
@@ -192,23 +194,23 @@ export default function App() {
       </section>
 
       {/* PROJECTS SECTION */}
-    <section id="projects" className="py-40 bg-slate-50 dark:bg-slate-950">
+      <section id="projects" className="py-40 bg-slate-50 dark:bg-slate-950">
         <div className="max-w-7xl mx-auto px-6">
           <h2 className="text-5xl md:text-7xl font-black text-center mb-24 dark:text-white">Featured Projects</h2>
           <div className="grid md:grid-cols-2 gap-12 lg:gap-20">
-            <ProjectCard 
-              title="📸 Memory Lane Project" 
-              description="A full-stack media preservation platform allowing users to log personal milestones and link rich media to specific memories." 
-              tech={["React", "Node.js", "Supabase", "PostgreSQL"]} 
-              image="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=800" 
+            <ProjectCard
+              title="📸 Memory Lane Project"
+              description="A full-stack media preservation platform allowing users to log personal milestones and link rich media to specific memories."
+              tech={["React", "Node.js", "Supabase", "PostgreSQL"]}
+              image="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=800"
               liveDemo="https://memory-lane-frontend-three.vercel.app"
               githubFrontend="https://github.com/ramalakshmi0304/MemoryLane-Frontend"
               githubBackend="https://github.com/ramalakshmi0304/MemoryLane-Backend"
             />
-            <ProjectCard 
-              title="📊 Time Tracking Analytics" 
-              description="An enterprise-grade dashboard featuring real-time data visualization of daily activities and efficiency metrics." 
-              tech={["React", "Supabase", "CSS"]} 
+            <ProjectCard
+              title="📊 Time Tracking Analytics"
+              description="An enterprise-grade dashboard featuring real-time data visualization of daily activities and efficiency metrics."
+              tech={["React", "Supabase", "CSS"]}
               image="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800"
               liveDemo="https://time-tracking-app-mu-lac.vercel.app/"
               githubFrontend="https://github.com/ramalakshmi0304/time-tracking-app"
@@ -221,7 +223,7 @@ export default function App() {
       <section id="contact" className="py-40 bg-white dark:bg-slate-900">
         <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-20">
           <div>
-            <h2 className="text-6xl font-black mb-10 dark:text-white leading-tight">Ready to build<br/>something great?</h2>
+            <h2 className="text-6xl font-black mb-10 dark:text-white leading-tight">Ready to build<br />something great?</h2>
             <div className="space-y-8">
               <div className="p-8 bg-slate-50 dark:bg-slate-800 rounded-[32px] border border-slate-100 dark:border-slate-700 flex items-center gap-6">
                 <div className="p-4 bg-indigo-100 dark:bg-indigo-900/30 rounded-2xl text-indigo-600"><Mail size={32} /></div>
@@ -233,7 +235,7 @@ export default function App() {
               </div>
             </div>
           </div>
-          
+
           <form ref={form} onSubmit={sendEmail} className="bg-slate-50 dark:bg-slate-800 p-12 rounded-[40px] space-y-6 shadow-2xl border border-slate-100 dark:border-slate-700">
             <div className="space-y-2">
               <label className="text-lg font-bold ml-2">Your Name</label>
