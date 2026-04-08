@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   SiHtml5, SiCss3, SiReact, SiNodedotjs, SiExpress,
-  SiSupabase, SiTailwindcss, SiGithub, SiShadcnui
+  SiSupabase, SiTailwindcss, SiGithub, SiShadcnui,SiMongodb
 } from "react-icons/si";
 import {
   User, Download, Moon, Sun, ArrowRight, Menu, X, Mail, MapPin
@@ -92,7 +92,7 @@ export default function App() {
       .catch((error) => { alert(`Failed to send: ${error.text}`); setIsSending(false); });
   };
 
-  const profileImg = "https://pplx-res.cloudinary.com/image/upload/pplx_search_images/e56fc44179500ae6ec5e8288d84ab7bc853555a6.jpg";
+  const profileImg = "https://blog.1byte.com/wp-content/uploads/2023/09/Importance-of-a-web-developer-portfolio-in-todays-IT-field.webp";
 
   return (
     <div className="bg-slate-50 dark:bg-slate-950 min-h-screen text-slate-900 dark:text-slate-100 antialiased transition-colors duration-500 font-sans">
@@ -179,6 +179,7 @@ export default function App() {
               { name: "React", icon: <SiReact className="text-cyan-400" /> },
               { name: "Node.js", icon: <SiNodedotjs className="text-green-500" /> },
               { name: "Supabase", icon: <SiSupabase className="text-emerald-500" /> },
+              { name: "MongoDB", icon: <SiMongodb className="text-green-500" /> },
               { name: "Tailwind", icon: <SiTailwindcss className="text-sky-400" /> },
               { name: "shadcn/ui", icon: <SiShadcnui className="text-slate-900 dark:text-white" /> },
               { name: "Express", icon: <SiExpress className="dark:text-white" /> },
@@ -198,6 +199,15 @@ export default function App() {
         <div className="max-w-7xl mx-auto px-6">
           <h2 className="text-5xl md:text-7xl font-black text-center mb-24 dark:text-white">Featured Projects</h2>
           <div className="grid md:grid-cols-2 gap-12 lg:gap-20">
+            <ProjectCard
+              title="📸 Social Media Application"
+              description="A full-stack web application for posting, sharing, and interacting with user-generated content including likes and comments."
+              tech={["React", "Node.js", "MongoDB Atlas"]}
+              image="https://pplx-res.cloudinary.com/image/upload/pplx_search_images/6669ef2447982274689b7c2e87586170a742d6ed.jpg"  // e.g., "https://res.cloudinary.com/your-account/image/upload/v123456/social-app-screenshot.jpg"
+              liveDemo="https://social-app-frontend-blond.vercel.app/"
+              githubFrontend="https://github.com/ramalakshmi0304/social_app_frontend"
+              githubBackend="https://github.com/ramalakshmi0304/social_app_backend"
+            />
             <ProjectCard
               title="📸 Memory Lane Project"
               description="A full-stack media preservation platform allowing users to log personal milestones and link rich media to specific memories."
