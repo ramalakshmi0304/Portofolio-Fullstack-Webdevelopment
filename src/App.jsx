@@ -202,7 +202,7 @@ export default function App() {
             <ProjectCard
               title="📸 Social Media Application"
               description="A full-stack web application for posting, sharing, and interacting with user-generated content including likes and comments."
-              tech={["React", "Node.js", "MongoDB Atlas"]}
+              tech={["React", "Node.js", "MongoDB Atlas,CSS"]}
               image="https://pplx-res.cloudinary.com/image/upload/pplx_search_images/6669ef2447982274689b7c2e87586170a742d6ed.jpg"  // e.g., "https://res.cloudinary.com/your-account/image/upload/v123456/social-app-screenshot.jpg"
               liveDemo="https://social-app-frontend-blond.vercel.app/"
               githubFrontend="https://github.com/ramalakshmi0304/social_app_frontend"
@@ -211,13 +211,23 @@ export default function App() {
             <ProjectCard
               title="📸 Memory Lane Project"
               description="A full-stack media preservation platform allowing users to log personal milestones and link rich media to specific memories."
-              tech={["React", "Node.js", "Supabase", "PostgreSQL"]}
+              tech={["React", "Node.js", "Supabase", "CSS"]}
               image="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=800"
               liveDemo="https://memory-lane-frontend-three.vercel.app"
               githubFrontend="https://github.com/ramalakshmi0304/MemoryLane-Frontend"
               githubBackend="https://github.com/ramalakshmi0304/MemoryLane-Backend"
             />
             <ProjectCard
+              title="Golf Charity Subscription Platform"
+              description="A full-stack subscription platform designed for golf charity events, featuring an enterprise-grade dashboard with real-time analytics.and efficiency metrics."
+              tech={["React","Node.js","Supabase", "CSS"]}
+              image="https://images.unsplash.com/photo-1592919505780-303950717480?w=800"
+              liveDemo="https://golf-platform-frontend-pi.vercel.app/"
+              githubFrontend="https://github.com/ramalakshmi0304/Golf-platform-frontend"
+              githubBackend="https://github.com/ramalakshmi0304/Golf-platform-backend"
+            />
+
+              <ProjectCard
               title="📊 Time Tracking Analytics"
               description="An enterprise-grade dashboard featuring real-time data visualization of daily activities and efficiency metrics."
               tech={["React", "Supabase", "CSS"]}
