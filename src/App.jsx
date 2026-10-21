@@ -2,61 +2,111 @@ import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   SiHtml5, SiCss3, SiReact, SiNodedotjs, SiExpress,
-  SiSupabase, SiTailwindcss, SiGithub, SiShadcnui,SiMongodb
+  SiSupabase, SiTailwindcss, SiGithub, SiShadcnui, SiMongodb
 } from "react-icons/si";
 import {
-  User, Download, Moon, Sun, ArrowRight, Menu, X, Mail, MapPin
+  User, Download, Moon, Sun, ArrowRight, Menu, X, Mail, MapPin, Sparkles, Layers
 } from "lucide-react";
 import emailjs from "@emailjs/browser";
 
 // --- Sub-Components ---
 
-const ProjectCard = ({ title, description, tech, liveDemo, githubFrontend, githubBackend, image }) => (
-  <motion.div
-    initial={{ opacity: 0, y: 30 }}
-    whileInView={{ opacity: 1, y: 0 }}
-    viewport={{ once: true }}
-    whileHover={{ y: -8 }}
-    className="group bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm border border-slate-200 dark:border-slate-700 rounded-3xl p-8 shadow-xl hover:shadow-2xl transition-all duration-500 overflow-hidden"
-  >
-    {image && (
-      <div className="mb-6 rounded-2xl overflow-hidden shadow-2xl relative">
-        <img src={image} alt={title} className="w-full h-48 md:h-56 object-cover group-hover:scale-105 transition-transform duration-700" />
-      </div>
-    )}
-    <div>
-      <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-4 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">{title}</h3>
-      <p className="text-slate-700 dark:text-slate-300 mb-6 leading-relaxed text-lg">{description}</p>
+const ProjectCard = ({ title, description, tech, liveDemo, githubFrontend, githubBackend, image, category, highlights, accent = "indigo" }) => {
+  const accentClasses = {
+    indigo: "group-hover:border-indigo-500/50 shadow-indigo-500/5",
+    emerald: "group-hover:border-emerald-500/50 shadow-emerald-500/5",
+  };
 
-      <div className="flex flex-wrap gap-2 mb-8">
-        {tech.map((t) => (
-          <span key={t} className="px-3 py-2 bg-slate-100 dark:bg-slate-700 text-slate-800 dark:text-slate-200 rounded-xl text-sm font-semibold border border-slate-200 dark:border-slate-600">{t}</span>
-        ))}
-      </div>
+  const badgeClasses = {
+    indigo: "bg-indigo-100 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-400 border-indigo-200 dark:border-indigo-800/50",
+    emerald: "bg-emerald-100 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-400 border-emerald-200 dark:border-emerald-800/50",
+  };
 
-      <div className="flex flex-col gap-3">
-        {/* Live Demo */}
-        <a href={liveDemo} target="_blank" rel="noreferrer" className="w-full bg-indigo-600 text-white py-4 px-6 rounded-2xl font-bold text-lg hover:bg-indigo-700 transition-all flex items-center justify-center gap-3">
-          <span>🔗 Live Demo</span> <ArrowRight className="w-5 h-5" />
-        </a>
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      whileHover={{ y: -8 }}
+      className={`group bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm border border-slate-200 dark:border-slate-700 rounded-3xl p-8 shadow-xl hover:shadow-2xl transition-all duration-500 overflow-hidden flex flex-col justify-between ${accentClasses[accent] || accentClasses.indigo}`}
+    >
+      <div>
+        {/* Top Header / Category Badge */}
+        {category && (
+          <div className="flex items-center justify-between mb-4">
+            <span className={`px-4 py-1.5 rounded-full text-xs font-black tracking-wider uppercase border ${badgeClasses[accent] || badgeClasses.indigo}`}>
+              {category}
+            </span>
+          </div>
+        )}
 
-        {/* Dynamic GitHub Links */}
-        <div className="flex flex-col sm:flex-row gap-3">
-          {githubFrontend && (
-            <a href={githubFrontend} target="_blank" rel="noreferrer" className="flex-1 border-2 border-slate-300 dark:border-slate-600 dark:text-white py-4 px-6 rounded-2xl font-bold text-base hover:bg-slate-50 dark:hover:bg-slate-700 transition-all flex items-center justify-center gap-2">
-              <SiGithub className="w-5 h-5" /> <span>{githubBackend ? "Frontend" : "View Source"}</span>
-            </a>
-          )}
-          {githubBackend && (
-            <a href={githubBackend} target="_blank" rel="noreferrer" className="flex-1 border-2 border-slate-300 dark:border-slate-600 dark:text-white py-4 px-6 rounded-2xl font-bold text-base hover:bg-slate-50 dark:hover:bg-slate-700 transition-all flex items-center justify-center gap-2">
-              <SiNodedotjs className="w-5 h-5 text-green-500" /> <span>Backend</span>
-            </a>
-          )}
+        {image && (
+          <div className="mb-6 rounded-2xl overflow-hidden shadow-xl relative border border-slate-100 dark:border-slate-700/50">
+            <img src={image} alt={title} className="w-full h-48 md:h-56 object-cover group-hover:scale-105 transition-transform duration-700" />
+          </div>
+        )}
+
+        <h3 className="text-2xl font-black text-slate-900 dark:text-white mb-3 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors leading-tight">
+          {title}
+        </h3>
+        <p className="text-slate-700 dark:text-slate-300 mb-6 leading-relaxed text-base">
+          {description}
+        </p>
+
+        {/* Key Highlights Bullet Points */}
+        {highlights && highlights.length > 0 && (
+          <div className="mb-6 space-y-2 bg-slate-50 dark:bg-slate-900/50 p-5 rounded-2xl border border-slate-100 dark:border-slate-700/60">
+            <p className="text-xs font-black uppercase tracking-widest text-slate-400 dark:text-slate-500 mb-3 flex items-center gap-1.5">
+              <Sparkles size={14} className="text-indigo-500" /> Key Features & Contributions
+            </p>
+            <ul className="grid grid-cols-1 gap-2">
+              {highlights.map((item, idx) => (
+                <li key={idx} className="text-sm font-semibold text-slate-700 dark:text-slate-300 flex items-start gap-2">
+                  <span className="text-indigo-500 mt-0.5">▪</span> {item}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        {/* Tech Stack Tags */}
+        <div className="flex flex-wrap gap-2 mb-8">
+          {tech.map((t) => (
+            <span key={t} className="px-3 py-1.5 bg-slate-100 dark:bg-slate-700/70 text-slate-800 dark:text-slate-200 rounded-xl text-xs font-bold border border-slate-200/80 dark:border-slate-600/50">
+              {t}
+            </span>
+          ))}
         </div>
       </div>
-    </div>
-  </motion.div>
-);
+
+      {/* Action Buttons */}
+      <div className="flex flex-col gap-3 mt-auto pt-4 border-t border-slate-100 dark:border-slate-700/50">
+        {/* Live Demo */}
+        {liveDemo && (
+          <a href={liveDemo} target="_blank" rel="noreferrer" className="w-full bg-indigo-600 text-white py-3.5 px-6 rounded-2xl font-bold text-base hover:bg-indigo-700 transition-all flex items-center justify-center gap-3 shadow-lg shadow-indigo-600/25">
+            <span>🔗 Live Demo</span> <ArrowRight className="w-4 h-4" />
+          </a>
+        )}
+
+        {/* Dynamic GitHub Links */}
+        {(githubFrontend || githubBackend) && (
+          <div className="flex flex-col sm:flex-row gap-3">
+            {githubFrontend && (
+              <a href={githubFrontend} target="_blank" rel="noreferrer" className="flex-1 border-2 border-slate-200 dark:border-slate-700 dark:text-white py-3 px-4 rounded-2xl font-bold text-sm hover:bg-slate-50 dark:hover:bg-slate-700 transition-all flex items-center justify-center gap-2">
+                <SiGithub className="w-4 h-4" /> <span>{githubBackend ? "Frontend Code" : "View Source"}</span>
+              </a>
+            )}
+            {githubBackend && (
+              <a href={githubBackend} target="_blank" rel="noreferrer" className="flex-1 border-2 border-slate-200 dark:border-slate-700 dark:text-white py-3 px-4 rounded-2xl font-bold text-sm hover:bg-slate-50 dark:hover:bg-slate-700 transition-all flex items-center justify-center gap-2">
+                <SiNodedotjs className="w-4 h-4 text-green-500" /> <span>Backend Code</span>
+              </a>
+            )}
+          </div>
+        )}
+      </div>
+    </motion.div>
+  );
+};
 
 // --- Main App ---
 
@@ -200,40 +250,64 @@ export default function App() {
           <h2 className="text-5xl md:text-7xl font-black text-center mb-24 dark:text-white">Featured Projects</h2>
           <div className="grid md:grid-cols-2 gap-12 lg:gap-20">
             <ProjectCard
-              title="📸 Social Media Application"
-              description="A full-stack web application for posting, sharing, and interacting with user-generated content including likes and comments."
-              tech={["React", "Node.js", "MongoDB Atlas,CSS"]}
-              image="https://pplx-res.cloudinary.com/image/upload/pplx_search_images/6669ef2447982274689b7c2e87586170a742d6ed.jpg"  // e.g., "https://res.cloudinary.com/your-account/image/upload/v123456/social-app-screenshot.jpg"
-              liveDemo="https://social-app-frontend-blond.vercel.app/"
-              githubFrontend="https://github.com/ramalakshmi0304/social_app_frontend"
-              githubBackend="https://github.com/ramalakshmi0304/social_app_backend"
+              category="AI Business Platform"
+              accent="emerald"
+              image="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800"
+              title="CaneFlow — AI-Powered Business Management"
+              description="A full-stack business management platform for sugarcane outlets, offering dashboards for sales, collections, expenses, and inventory tracking. Integrated Google Gemini AI to generate actionable operational insights from business data."
+              highlights={[
+                "Comprehensive sales & collections tracking",
+                "Advanced expense management & inventory monitoring",
+                "Gemini AI-powered business analytics & operational insights"
+              ]}
+              tech={[
+                "React",
+                "JavaScript",
+                "Node.js",
+                "Express.js",
+                "PostgreSQL",
+                "Google Gemini AI",
+                "REST APIs"
+              ]}
+              liveDemo="https://vyapara360.com/"
             />
             <ProjectCard
+              category="Enterprise SaaS"
+              accent="indigo"
+              image="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800"
+              title="Enterprise CRM Platform — TechJose"
+              description="Contributed to an enterprise CRM platform by improving dashboard analytics, lead assignment, deal pipelines, and ticketing workflows. Built and validated REST APIs while working on authentication, role-based access control, and Google Calendar integration."
+              highlights={[
+                "Optimized lead & deal pipeline workflows",
+                "Role-based access control & secure authentication",
+                "Google Calendar API integration for seamless scheduling"
+              ]}
+              tech={[
+                "React",
+                "Node.js",
+                "Express.js",
+                "MongoDB",
+                "Mongoose",
+                "REST APIs",
+                "Google Calendar API"
+              ]}
+              liveDemo="https://techjose-clientos.techjose.com/"
+            />
+
+            <ProjectCard
+              category="Media Preservation"
+              accent="indigo"
+              image="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=800"
               title="📸 Memory Lane Project"
               description="A full-stack media preservation platform allowing users to log personal milestones and link rich media to specific memories."
+              highlights={[
+                "Personal milestone logging & interactive timeline",
+                "Secure cloud media attachments and retrieval"
+              ]}
               tech={["React", "Node.js", "Supabase", "CSS"]}
-              image="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=800"
               liveDemo="https://memory-lane-frontend-three.vercel.app"
               githubFrontend="https://github.com/ramalakshmi0304/MemoryLane-Frontend"
               githubBackend="https://github.com/ramalakshmi0304/MemoryLane-Backend"
-            />
-            <ProjectCard
-              title="Golf Charity Subscription Platform"
-              description="A full-stack subscription platform designed for golf charity events, featuring an enterprise-grade dashboard with real-time analytics.and efficiency metrics."
-              tech={["React","Node.js","Supabase", "CSS"]}
-              image="https://images.unsplash.com/photo-1592919505780-303950717480?w=800"
-              liveDemo="https://golf-platform-frontend-pi.vercel.app/"
-              githubFrontend="https://github.com/ramalakshmi0304/Golf-platform-frontend"
-              githubBackend="https://github.com/ramalakshmi0304/Golf-platform-backend"
-            />
-
-              <ProjectCard
-              title="📊 Time Tracking Analytics"
-              description="An enterprise-grade dashboard featuring real-time data visualization of daily activities and efficiency metrics."
-              tech={["React", "Supabase", "CSS"]}
-              image="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800"
-              liveDemo="https://time-tracking-app-mu-lac.vercel.app/"
-              githubFrontend="https://github.com/ramalakshmi0304/time-tracking-app"
             />
           </div>
         </div>
